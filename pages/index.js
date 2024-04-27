@@ -1,4 +1,5 @@
 import ChatContainer from "components/ChatContainer/ChatContainer";
+import { Html } from "next/document";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
@@ -120,6 +121,7 @@ export default function Home() {
   };
   return (
     <>
+      {/* <div data-theme="retro"> */}
       <Head>
         <title>Chit-Chat</title>
       </Head>
@@ -133,6 +135,7 @@ export default function Home() {
         onSendMessageHandle={onSendMessageHandle}
         messages={messages}
       />
+      {/* </div> */}
     </>
   );
 }
