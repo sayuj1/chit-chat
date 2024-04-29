@@ -11,18 +11,26 @@ export default function Room({
   ];
   if (!isRoomSelected) activeRoomClasses = [""];
   return (
-    <div
-      className={`btn btn-lg btn-block rounded-none text-left ${activeRoomClasses.join(
-        " "
-      )}`}
-      onClick={() => onSelectRoomHandle(name)}
-    >
-      <div className="">
-        <div className="">
-          <h6 className="mb-0">{name}</h6>
-          <small className="">{createdAt}</small>
+    <>
+      <div
+        className={`btn btn-lg btn-block rounded-none text-left ${activeRoomClasses.join(
+          " "
+        )}`}
+        onClick={() => onSelectRoomHandle(name)}
+      >
+        <div className="flex w-[100%] justify-between">
+          <span className="capitalize">{name}</span>
+          <small>
+            {new Date(createdAt)
+              .toISOString()
+              .substring(0, 10)
+              .split("-")
+              .reverse()
+              .join("-")}
+          </small>
         </div>
       </div>
-    </div>
+      <hr />
+    </>
   );
 }

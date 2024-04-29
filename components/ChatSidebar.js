@@ -23,8 +23,8 @@ export default function ChatSidebar() {
           Create Room
         </button>
       </div>
-      <div className="px-4 py-2">
-        <span className="mb-0 py-1">Rooms</span>
+      <div className="px-4 py-4 text-center">
+        <span className="mb-0 py-1 text-3xl">Rooms</span>
       </div>
       <RoomContainer />
       <div className="flex justify-center border-b-[1px] border-slate-500 px-4 py-5">
