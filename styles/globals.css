@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer components {
-  .btn {
-    @apply rounded-md bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-600;
+  .prim-btn-block {
+    @apply btn btn-neutral btn-active btn-lg btn-block rounded-[20px] bg-neutral;
   }
 
-  .btn:disabled {
-    @apply cursor-not-allowed bg-gray-400;
+  .prim-btn-wide {
+    @apply btn btn-neutral btn-active btn-lg btn-wide rounded-[20px] bg-neutral;
   }
 }

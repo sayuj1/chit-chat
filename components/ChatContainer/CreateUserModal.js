@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "/styles/CreateUserModal.module.css";
+import { useChatContext } from "context/ChatContext";
 
-export default function CreateUserModal({
-  onCloseCreateUserModal,
-  onCreateUsername,
-}) {
+export default function CreateUserModal() {
+  const { onCloseCreateUserModal, onCreateUsername } = useChatContext();
   const [isBrowser, setIsBrowser] = useState(false);
   const [username, setUsername] = useState("");
   const [isMaxLengthErr, setIsMaxLengthErr] = useState(false);
@@ -44,59 +43,58 @@ export default function CreateUserModal({
 
   let modalUI = isBrowser
     ? ReactDOM.createPortal(
-        <div className="modal d-block">
-          <div className={styles.Backdrop}></div>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Create User</h5>
+        <dialog id="create_user_modal" className="modal modal-open">
+          <div className="modal-box">
+            <button
+              className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+              onClick={onCloseCreateUserModal}
+            >
+              ✕
+            </button>
+            <h3 className="text-lg font-bold">Create User</h3>
+            <p className="py-4">
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                id="floatingInput"
+                value={username}
+                onChange={handleInputChange}
+                placeholder="username"
+                required
+              />
+              {isMinLengthErr ? (
+                <p className={styles.errorText}>
+                  Min. length should be 3 characters
+                </p>
+              ) : isMaxLengthErr ? (
+                <p className={styles.errorText}>
+                  Max. length should be less than 15 characters
+                </p>
+              ) : null}
+            </p>
+            <div className="modal-action flex justify-center ">
+              <form method="dialog">
                 <button
                   type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={onCloseCreateUserModal}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    className={`form-control ${
-                      (isMinLengthErr || isMaxLengthErr) && "is-invalid"
-                    }`}
-                    id="floatingInput"
-                    value={username}
-                    onChange={handleInputChange}
-                    placeholder="username"
-                    required
-                  />
-                  <label htmlFor="floatingInput">Username</label>
-                  {isMinLengthErr ? (
-                    <div className="invalid-feedback">
-                      Min. length should be 3 characters
-                    </div>
-                  ) : isMaxLengthErr ? (
-                    <div className="invalid-feedback">
-                      Max. length should be less than 15 characters
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-primary"
+                  className="prim-btn-wide"
                   disabled={!username || isMaxLengthErr || isMinLengthErr}
                   onClick={handleSubmit}
                 >
-                  Join
+                  Create
                 </button>
-              </div>
+              </form>
             </div>
           </div>
-        </div>,
-        document.getElementById("__next")
+
+          <form
+            method="dialog"
+            className="modal-backdrop"
+            onClick={onCloseCreateUserModal}
+          >
+            <button>close</button>
+          </form>
+        </dialog>,
+        document.getElementById("__container")
       )
     : null;
   return modalUI;

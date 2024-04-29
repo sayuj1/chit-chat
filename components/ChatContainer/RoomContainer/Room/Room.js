@@ -6,19 +6,21 @@ export default function Room({
   isRoomSelected,
   onSelectRoomHandle,
 }) {
-  let activeRoomClasses = ["active", "text-white"];
-  if (!isRoomSelected) activeRoomClasses = ["bg-white"];
+  let activeRoomClasses = [
+    "btn btn-neutral btn-active btn-lg btn-block rounded-none bg-neutral text-left",
+  ];
+  if (!isRoomSelected) activeRoomClasses = [""];
   return (
     <div
-      className={`list-group-item list-group-item-action rounded-0 my-2 ${activeRoomClasses.join(
+      className={`btn btn-lg btn-block rounded-none text-left ${activeRoomClasses.join(
         " "
       )}`}
       onClick={() => onSelectRoomHandle(name)}
     >
-      <div className="ml-4">
-        <div className="d-flex align-item-center justify-content-between mb-1">
+      <div className="">
+        <div className="">
           <h6 className="mb-0">{name}</h6>
-          <small className="small font-weight-bold">1 Apr</small>
+          <small className="">{createdAt}</small>
         </div>
       </div>
     </div>

@@ -1,17 +1,18 @@
 import React from "react";
-import styles from "/styles/MessageBox.module.css";
 
 export default function MessageBox({ username, name, message }) {
   return (
-    <div
-      className={`d-flex align-item-center ${
-        username === name && "justify-content-end text-right"
-      }`}
-    >
-      <div className="px-2">
-        <span className="name">{name}</span>
-        <p className={styles.MessageBox}>{message}</p>
+    <div className={`chat ${username === name ? "chat-end" : "chat-start"}`}>
+      <div className="avatar chat-image">
+        <div className="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS chat bubble component"
+            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+          />
+        </div>
       </div>
+      <div className="chat-header">{name}</div>
+      <div className="chat-bubble">{message}</div>
     </div>
   );
 }

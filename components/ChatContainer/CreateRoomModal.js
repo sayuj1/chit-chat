@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "/styles/CreateRoomModal.module.css";
+import { useChatContext } from "context/ChatContext";
 
-export default function CreateRoomModal({
-  onCloseCreateRoomModal,
-  onCreateRoom,
-}) {
+export default function CreateRoomModal() {
+  const { onCloseCreateRoomModal, onCreateRoom } = useChatContext();
   const [isBrowser, setIsBrowser] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [isMaxLengthErr, setIsMaxLengthErr] = useState(false);
@@ -41,58 +40,58 @@ export default function CreateRoomModal({
 
   let modalUI = isBrowser
     ? ReactDOM.createPortal(
-        <div className="modal d-block">
-          <div
-            className={styles.Backdrop}
-            onClick={onCloseCreateRoomModal}
-          ></div>
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Create Room</h5>
+        <dialog id="create_room_modal" className="modal modal-open">
+          <div className="modal-box">
+            <button
+              className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+              onClick={onCloseCreateRoomModal}
+            >
+              ✕
+            </button>
+            <h3 className="text-lg font-bold">Create Room</h3>
+            <p className="py-4">
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                id="room-name"
+                placeholder="Room Name"
+                onChange={handleRoomNameChange}
+                value={roomName}
+                required
+              />
+              {isMinLengthErr ? (
+                <p className={styles.errorText}>
+                  Min. length should be 3 characters
+                </p>
+              ) : isMaxLengthErr ? (
+                <p className={styles.errorText}>
+                  Max. length should be less than 15 characters
+                </p>
+              ) : null}
+            </p>
+            <div className="modal-action flex justify-center ">
+              <form method="dialog">
                 <button
                   type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={onCloseCreateRoomModal}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <label htmlFor="room-name" className="col-form-label"></label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="room-name"
-                  placeholder="Room Name"
-                  onChange={handleRoomNameChange}
-                  value={roomName}
-                  required
-                />
-                {isMinLengthErr ? (
-                  <p className="text-danger">
-                    Min. length should be 3 characters
-                  </p>
-                ) : isMaxLengthErr ? (
-                  <p className="text-danger">
-                    Max. length should be less than 15 characters
-                  </p>
-                ) : null}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-primary"
+                  className="prim-btn-wide"
                   disabled={!roomName || isMaxLengthErr || isMinLengthErr}
                   onClick={onSubmitRoomName}
                 >
                   Create
                 </button>
-              </div>
+              </form>
             </div>
           </div>
-        </div>,
-        document.getElementById("__next")
+
+          <form
+            method="dialog"
+            className="modal-backdrop"
+            onClick={onCloseCreateRoomModal}
+          >
+            <button>close</button>
+          </form>
+        </dialog>,
+        document.getElementById("__container")
       )
     : null;
 

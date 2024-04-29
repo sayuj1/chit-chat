@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import RoomContainer from "./RoomContainer/RoomContainer";
-import ChatBoxContainer from "./ChatBoxContainer/ChatBoxContainer";
+import ChatHeader from "components/ChatHeader";
+import { useChatContext } from "context/ChatContext";
+import MessageInput from "./ChatBoxContainer/MessageInput";
+import MessageBox from "./ChatBoxContainer/MessageBox";
 const CreateUserModal = dynamic(() => import("./CreateUserModal"));
 const CreateRoomModal = dynamic(() => import("./CreateRoomModal"));
 
-export default function ChatContainer({
-  onCreateUsername,
-  username,
-  selectedRoom,
-  onCreateRoom,
-  roomsList,
-  onSelectRoomHandle,
-  onSendMessageHandle,
-  messages,
-}) {
-  // by default asking user to enter credentials
-  const [showCreateUserModal, setShowCreateUserModal] = useState(true);
-  const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
+export default function ChatContainer() {
+  const { showCreateRoomModal, showCreateUserModal, username, messages } =
+    useChatContext();
+
   const [isUsernameExists, setIsUsernameExists] = useState(true);
 
   useEffect(() => {
@@ -28,65 +21,31 @@ export default function ChatContainer({
     }
   }, []);
 
-  const onCloseCreateUserModal = () => {
-    setShowCreateUserModal(false);
-  };
+  let createUserModalUI = <CreateUserModal />;
 
-  const onShowCreateRoomModal = () => {
-    setShowCreateRoomModal(true);
-  };
+  let createRoomModalUI = <CreateRoomModal />;
 
-  const onCloseCreateRoomModal = () => {
-    setShowCreateRoomModal(false);
-  };
-
-  let createUserModalUI = (
-    <CreateUserModal
-      onCloseCreateUserModal={onCloseCreateUserModal}
-      onCreateUsername={onCreateUsername}
-    />
-  );
-
-  let createRoomModalUI = (
-    <CreateRoomModal
-      onCloseCreateRoomModal={onCloseCreateRoomModal}
-      onCreateRoom={onCreateRoom}
-    />
-  );
-
-  let headerUI = (
-    <header className="text-center">
-      <h1 className="display-4">Chit-Chat</h1>
-      <p className="lead mb-2">Chit-Chat with your friends!</p>
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={onShowCreateRoomModal}
-      >
-        Create Room
-      </button>
-    </header>
-  );
   return (
     <>
-      <div className="px-4 py-5">
-        {headerUI}
-        <div className="row mt-5 overflow-hidden shadow">
-          <div className="col-5 px-0">
-            <RoomContainer
-              selectedRoom={selectedRoom}
-              roomsList={roomsList}
-              onSelectRoomHandle={onSelectRoomHandle}
-            />
-          </div>
-          <div className="col-7 px-0">
-            <ChatBoxContainer
+      <div className="flex flex-col overflow-hidden ">
+        <ChatHeader />
+        <div className="flex-1 overflow-scroll px-4 py-2">
+          {messages.map((message, messageIdx) => (
+            <MessageBox
+              key={messageIdx}
               username={username}
-              onSendMessageHandle={onSendMessageHandle}
-              messages={messages}
+              name={message.author}
+              message={message.message}
             />
-          </div>
+          ))}
         </div>
+        <footer className="border-t-[1px] border-slate-500 p-5">
+          <form>
+            <fieldset className="flex gap-2">
+              <MessageInput />
+            </fieldset>
+          </form>
+        </footer>
       </div>
 
       {showCreateUserModal && !isUsernameExists ? createUserModalUI : null}
