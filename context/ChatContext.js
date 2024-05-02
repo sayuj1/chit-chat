@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import io from "socket.io-client";
+import { generatedAvatar } from "Utils/AvatarGenerator";
 import { LISTENERS, EVENTS } from "Utils/Constants";
 
 let socket;
@@ -9,6 +10,7 @@ const ChatContext = createContext();
 export const ChatContextProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
   const [username, setUsername] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState({});
   const [showCreateUserModal, setShowCreateUserModal] = useState(true);
   const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState("");
@@ -35,8 +37,16 @@ export const ChatContextProvider = ({ children }) => {
     socketInit();
     //setting username if exists
     const username = localStorage.getItem("username");
-    if (username) {
+    const avatar = localStorage.getItem("avatar");
+    if (username && username !== "undefined") {
       setUsername(username);
+    }
+    if (avatar !== "undefined") {
+      setSelectedAvatar(JSON.parse(avatar));
+    } else {
+      // assign a avatar
+      localStorage.setItem("avatar", JSON.stringify(generatedAvatar()[0]));
+      setSelectedAvatar(generatedAvatar()[0]);
     }
 
     return () => {
@@ -103,11 +113,12 @@ export const ChatContextProvider = ({ children }) => {
       author: username,
       message: message,
       room: selectedRoom,
+      avatar: selectedAvatar,
     });
 
     setMessages((currentMessages) => [
       ...currentMessages,
-      { author: username, message },
+      { author: username, message, avatar: selectedAvatar },
     ]);
   };
 
@@ -126,6 +137,17 @@ export const ChatContextProvider = ({ children }) => {
   const onCreateUsername = (username) => {
     setUsername(username);
     localStorage.setItem("username", username);
+
+    if (selectedAvatar) {
+      localStorage.setItem(
+        "avatar",
+        JSON.stringify(generatedAvatar()[selectedAvatar])
+      );
+      setSelectedAvatar(generatedAvatar()[selectedAvatar]);
+    } else {
+      localStorage.setItem("avatar", JSON.stringify(generatedAvatar()[0]));
+      setSelectedAvatar(generatedAvatar()[0]);
+    }
   };
 
   const onCloseCreateUserModal = () => {
@@ -165,6 +187,8 @@ export const ChatContextProvider = ({ children }) => {
         setShowCreateUserModal,
         theme,
         setTheme,
+        setSelectedAvatar,
+        selectedAvatar,
       }}
     >
       {children}

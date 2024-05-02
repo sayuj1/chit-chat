@@ -23,11 +23,11 @@ const onCreateRoomHandle = (data, socket) => {
 };
 
 const onNewMessageHandle = (data, socket) => {
-  const { author, message, room } = data;
+  const { author, message, room, avatar } = data;
   if (!room) return;
 
   let updatedRoom = ROOMS_LIST.find((r) => r.name == room);
-  updatedRoom.messages.push({ author, message, createdAt: new Date() });
+  updatedRoom.messages.push({ author, message, createdAt: new Date(), avatar });
 
   // send message to all users in the room
   if (updatedRoom) {

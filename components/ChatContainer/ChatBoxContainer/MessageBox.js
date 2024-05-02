@@ -1,15 +1,11 @@
 import React from "react";
+import Avatar from "react-nice-avatar";
 
-export default function MessageBox({ username, name, message }) {
+export default function MessageBox({ username, name, message, avatar }) {
   return (
     <div className={`chat ${username === name ? "chat-end" : "chat-start"}`}>
       <div className="avatar chat-image">
-        <div className="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS chat bubble component"
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-          />
-        </div>
+        <Avatar style={{ width: "4.5rem", height: "4.5rem" }} {...avatar} />
       </div>
       <div className="chat-header">{name}</div>
       <div className="chat-bubble">{message}</div>

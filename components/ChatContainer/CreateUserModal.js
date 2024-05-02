@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "/styles/CreateUserModal.module.css";
 import { useChatContext } from "context/ChatContext";
+import AvatarSelector from "components/UserAvatar/AvatarSelector";
 
 export default function CreateUserModal() {
   const { onCloseCreateUserModal, onCreateUsername } = useChatContext();
@@ -52,6 +53,9 @@ export default function CreateUserModal() {
               ✕
             </button>
             <h3 className="text-lg font-bold">Create User</h3>
+            <p className="py-4">
+              <AvatarSelector />
+            </p>
             <p className="py-4">
               <input
                 type="text"

@@ -36,6 +36,7 @@ export default function ChatContainer() {
               username={username}
               name={message.author}
               message={message.message}
+              avatar={message.avatar}
             />
           ))}
         </div>

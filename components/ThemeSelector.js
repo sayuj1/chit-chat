@@ -61,7 +61,7 @@ export default function ThemeSelector() {
         className="dropdown-content z-[1] h-[calc(100vh-20rem)] w-52 overflow-y-auto rounded-box bg-base-300 p-2 shadow-2xl"
       >
         {availableThemes.map((availableTheme) => (
-          <li>
+          <li key={availableTheme}>
             <input
               type="radio"
               name="theme-dropdown"
