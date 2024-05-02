@@ -10,7 +10,7 @@ const ChatContext = createContext();
 export const ChatContextProvider = ({ children }) => {
   const [theme, setTheme] = useState("light");
   const [username, setUsername] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState({});
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [showCreateUserModal, setShowCreateUserModal] = useState(true);
   const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState("");

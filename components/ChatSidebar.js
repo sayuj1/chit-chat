@@ -14,7 +14,7 @@ export default function ChatSidebar() {
   const handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("avatar");
-    setSelectedAvatar({});
+    setSelectedAvatar(null);
     setUsername("");
     setShowCreateUserModal(true);
   };
